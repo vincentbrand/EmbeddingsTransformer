@@ -1,0 +1,38 @@
+services:
+  preprocess:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./app:/app
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MODE=preprocess
+    
+  training:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./app:/app
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MODE=training
+    
+  inference:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./app:/app
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MODE=inference
+    stdin_open: true
+    tty: true

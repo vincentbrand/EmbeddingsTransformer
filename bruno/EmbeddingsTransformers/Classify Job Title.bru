@@ -1,0 +1,21 @@
+meta {
+  name: Classify Job Title
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8000/classify
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "job_title": "Senior Software Engineer"
+  }
+}

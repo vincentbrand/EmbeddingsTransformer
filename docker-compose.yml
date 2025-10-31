@@ -49,3 +49,16 @@ services:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
+  
+  api-only:
+    build:
+      context: ./api
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./api:/app
+    env_file:
+      - ./api/.env
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1

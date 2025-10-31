@@ -36,3 +36,16 @@ services:
       - MODE=inference
     stdin_open: true
     tty: true
+  
+  api:
+    build:
+      context: ./api
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./api:/app
+    env_file:
+      - ./api/.env
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1

@@ -10,6 +10,7 @@ This project takes job titles, converts them to embeddings using OpenAI's text-e
 
 - **Training (`training.py`)**: Trains a neural network to transform 1536-dimensional OpenAI embeddings into a 128-dimensional task-specific space using centroid-based loss
 - **Inference (`interference.py`)**: Loads the trained model and classifies new job titles by comparing transformed embeddings to category centroids
+- **FastAPI Service (`api/main.py`)**: REST API service that exposes the trained model for real-time job title classification
 - **Data**: Job titles dataset (`job_titles.csv`) used for training and evaluation
 
 ## How to Use
@@ -56,7 +57,7 @@ python interference.py
 
 ### Docker Setup
 
-The Docker setup supports three modes: preprocessing, training, and inference.
+The Docker setup supports four services: preprocessing, training, inference, and API.
 
 #### Complete Workflow
 
@@ -74,6 +75,29 @@ docker-compose up training
 ```bash
 docker-compose up inference
 ```
+
+4. **API Service**: Start the FastAPI web service:
+```bash
+docker-compose up api
+```
+
+#### FastAPI Service
+
+The API service provides a REST interface for real-time job title classification:
+
+- **Base URL**: http://localhost:8000
+- **Interactive Documentation**: http://localhost:8000/docs
+- **Health Check**: `GET /health`
+
+**Available Endpoints:**
+- `GET /` - Hello World response
+- `POST /classify` - Classify a job title
+  ```json
+  {
+    "job_title": "Software Engineer"
+  }
+  ```
+- `GET /health` - Service health status
 
 #### Manual Docker Build
 
@@ -95,6 +119,12 @@ docker run -v $(pwd)/app:/app --env-file .env -e MODE=training embedding-transfo
 4. Run inference:
 ```bash
 docker run -v $(pwd)/app:/app --env-file .env -e MODE=inference -it embedding-transformer
+```
+
+5. Run API service:
+```bash
+docker build -f api/docker/Dockerfile -t embedding-api ./api
+docker run -v $(pwd)/api:/app --env-file api/.env -p 8000:8000 embedding-api
 ```
 
 ## Data Requirements
